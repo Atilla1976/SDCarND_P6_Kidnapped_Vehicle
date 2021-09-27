@@ -29,24 +29,18 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
    * NOTE: Consult particle_filter.h for more information about this method 
    *   (and others in this file).
    */
-  num_particles = 50;  // TODO: Set the number of particles
   
-  // 
-  std::default_random_engine gen;
-    
-  // Setting GPS provided state of the car
-  double gps_x = x;
-  double gps_y = y;
-  double gps_theta = theta;
-
+  // number of particles
+  num_particles = 50; 
   
   // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta)
-  normal_distribution<double> dist_x(gps_x, std[0]);
-  normal_distribution<double> dist_y(gps_y, std[1]);
-  normal_distribution<double> dist_theta(gps_theta, std[2]);
+  normal_distribution<double> dist_x(x, std[0]);
+  normal_distribution<double> dist_y(y, std[1]);
+  normal_distribution<double> dist_theta(theta, std[2]);
   
-    
-  // 
+  std::default_random_engine gen;
+  
+  // Generate "num_particles" of particles
   for (int i=0; i<num_particles; i++)
     Particle particle = {};
     particle.id = i;
