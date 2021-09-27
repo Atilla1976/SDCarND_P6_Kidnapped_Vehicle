@@ -1,8 +1,6 @@
 /**
  * particle_filter.cpp
  *
- * Created on: Dec 12, 2016
- * Author: Tiffany Huang
  */
 
 #include "particle_filter.h"
@@ -20,6 +18,7 @@
 
 using std::string;
 using std::vector;
+using std::normal_distribution;
 
 void ParticleFilter::init(double x, double y, double theta, double std[]) {
   /**
@@ -30,8 +29,34 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
    * NOTE: Consult particle_filter.h for more information about this method 
    *   (and others in this file).
    */
-  num_particles = 0;  // TODO: Set the number of particles
+  num_particles = 50;  // TODO: Set the number of particles
+  
+  // 
+  std::default_random_engine gen;
+    
+  // Setting GPS provided state of the car
+  double gps_x = x;
+  double gps_y = y;
+  double gps_theta = theta;
 
+  
+  // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta)
+  normal_distribution<double> dist_x(gps_x, std[0]);
+  normal_distribution<double> dist_y(gps_y, std[1]);
+  normal_distribution<double> dist_theta(gps_theta, std[2]);
+  
+    
+  // 
+  for (int i=0; i<num_particles; i++)
+    Particle particle = {};
+    particle.id = i;
+    particle.x = dist_x(gen);
+    particle.y = dist_y(gen);
+    particle.theta = dist_theta(gen);
+    particle.weight = 1.0;
+    particles[i] = particle;
+  }
+  is_initialized = true;    
 }
 
 void ParticleFilter::prediction(double delta_t, double std_pos[], 
@@ -43,7 +68,34 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    *  http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
    *  http://www.cplusplus.com/reference/random/default_random_engine/
    */
-
+  
+  for (int i = 0; i<num_particles; i++) {
+    Particle particle = particles[i];
+    
+    // Checking if yaw rate is equal to zero
+    
+    if (fabs(yaw_rate) < 0.0001) {
+      particle.x = particle.x + velocity * delta_t * cos(particle.theta);
+      particle.y = particle.y + velocity * delta_t * sin(particle.theta);
+      particle.theta = particle.theta;
+    }
+    else {
+      particle.x = particle.x + (velocity /yaw_rate) * (sin(particle.theta + (yaw_rate * delta_t)) - sin(particle.theta));
+      particle.y = particle.y + (velocity /yaw_rate) * (cos(particle.theta) - cos(particle.theta + (yaw_rate * delta_t)));
+      particle.theta = particle.theta + (yaw_rate * delta_t);
+    }
+  
+    // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta) 
+    std::default_random_engine gen;
+  
+    normal_distribution<double> dist_x(particle.x, std_pos[0]);
+    normal_distribution<double> dist_y(particle.y, std_pos[1]);
+    normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
+    
+    particle[i].x = dist_x(gen);
+    particle[i].y = dist_y(gen);
+    particle[i].theta = dist_theta(gen);
+  }
 }
 
 void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted, 
