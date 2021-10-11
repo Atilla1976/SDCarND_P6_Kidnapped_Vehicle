@@ -109,7 +109,7 @@ void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted,
       double distance = dist(observations[i].x, observations[i].y, predicted[j].x, predicted[j].y);
       if(distance < minDist){
         minDist = distance;
-        observation[i].id = predicted[j].id;
+        observations[i].id = predicted[j].id;
       }
     }
   }
