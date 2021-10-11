@@ -41,7 +41,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   std::default_random_engine gen;
   
   // Generate "num_particles" of particles
-  for (int i=0; i<num_particles; i++)
+  for (int i=0; i<num_particles; i++){
     Particle particle = {};
     particle.id = i;
     particle.x = dist_x(gen);
