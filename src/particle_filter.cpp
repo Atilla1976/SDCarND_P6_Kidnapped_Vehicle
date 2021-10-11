@@ -43,7 +43,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   // Generate "num_particles" of particles
   for (int i=0; i<num_particles; i++){
     Particle particle;
-    particle.id = i;
+    particlex.id = i;
     particle.x = dist_x(gen);
     particle.y = dist_y(gen);
     particle.theta = dist_theta(gen);
