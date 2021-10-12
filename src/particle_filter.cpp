@@ -203,6 +203,7 @@ void ParticleFilter::resample() {
     Particle particle = particles[d(gen)];
     resampled_particles.push_back(particle);
   }
+  particles = resampled_particles;
 }
 
 void ParticleFilter::SetAssociations(Particle& particle, 
