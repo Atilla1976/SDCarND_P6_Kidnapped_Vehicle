@@ -115,6 +115,22 @@ void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted,
   }
 }
 
+double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y) {
+  // calculate normalization term
+  double gauss_norm;
+  gauss_norm = 1 / (2 * M_PI * sig_x * sig_y);
+
+  // calculate exponent
+  double exponent;
+  exponent = (pow(x_obs - mu_x, 2) / (2 * pow(sig_x, 2))) + (pow(y_obs - mu_y, 2) / (2 * pow(sig_y, 2)));
+
+  // calculate weight using normalization terms and exponent
+  double weight;
+  weight = gauss_norm * exp(-exponent);
+
+  return weight;
+}
+
 void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], const vector<LandmarkObs> &observations, const Map &map_landmarks) {
   /**
    * TODO: Update the weights of each particle using a mult-variate Gaussian 
@@ -129,23 +145,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], c
    *   and the following is a good resource for the actual equation to implement
    *   (look at equation 3.33) http://planning.cs.uiuc.edu/node99.html
    */
-  
-  double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y) {
-    // calculate normalization term
-    double gauss_norm;
-    gauss_norm = 1 / (2 * M_PI * sig_x * sig_y);
-
-    // calculate exponent
-    double exponent;
-    exponent = (pow(x_obs - mu_x, 2) / (2 * pow(sig_x, 2))) + (pow(y_obs - mu_y, 2) / (2 * pow(sig_y, 2)));
-
-    // calculate weight using normalization terms and exponent
-    double weight;
-    weight = gauss_norm * exp(-exponent);
-
-    return weight;
-  }
-  
+      
   for (unsigned int i = 0; i < particles.size(); ++i) {
     Particle particle = particles[i];
     double prob = 1.0;
