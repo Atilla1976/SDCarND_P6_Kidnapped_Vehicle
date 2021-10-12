@@ -62,7 +62,6 @@ inline double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs
     weight = gauss_norm * exp(-exponent);
 
     return weight;
-  }  
 }
 
 
