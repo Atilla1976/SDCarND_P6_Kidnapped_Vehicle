@@ -130,7 +130,14 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], c
    *   (look at equation 3.33) http://planning.cs.uiuc.edu/node99.html
    */
   
-  double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y) {
+
+  
+  
+  for (unsigned int i = 0; i < particles.size(); ++i) {
+    Particle particle = particles[i];
+    double prob = 1.0;
+
+    double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y) {
       // calculate normalization term
       double gauss_norm;
       gauss_norm = 1 / (2 * M_PI * sig_x * sig_y);
@@ -144,13 +151,10 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], c
       weight = gauss_norm * exp(-exponent);
 
       return weight;
-  }
-  
-  
-  for (unsigned int i = 0; i < particles.size(); ++i) {
-    Particle particle = particles[i];
-    double prob = 1.0;
+    }
 
+    
+    
         for (unsigned int j = 0; j < observations.size(); j++) {
             // Homogenous Transformation (from vehicle's coord. system to map's coordinate system)
 
