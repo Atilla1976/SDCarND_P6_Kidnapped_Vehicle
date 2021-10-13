@@ -103,24 +103,18 @@ void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted,
    * NOTE: This method is useful as a helper during the updateWeights phase.
    */
   
-  unsigned int numObservations = observations.size();
-  unsigned int numPredictions = predicted.size();
-  
-  for (unsigned int i = 0; i< numObservations; i++){
-    double minDistance = std::numeric_limits<double>::max();
-    int index_map = -1;
-    for (unsigned int j=0; j<numPredictions; j++){
-      double x_distance = observations[i].x - predicted[j].x;
-      double y_distance = observations[i].y - predicted[j].y;
-      double distance = x_distance * x_distance + y_distance * y_distance;
-      if (distance < minDistance){
-        minDistance = distance;
-        index_map =  predicted[j].id;
+  for(unsigned int i=0; i<observations.size(); i++){
+    double minDist = std::numeric_limits<double>::max();
+    for(unsigned int j=0; j<predicted.size(); j++){
+      double distance = dist(observations[i].x, observations[i].y, predicted[j].x, predicted[j].y);
+      if(distance < minDist){
+        minDist = distance;
+        observations[i].id = predicted[j].id;
       }
     }
-    observations[i].id = index_map;
   }
 }
+
 
 double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs,
                    double mu_x, double mu_y) {
