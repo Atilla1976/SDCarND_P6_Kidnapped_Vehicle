@@ -9,6 +9,14 @@ A robot has been kidnapped and transported to a new location! Luckily it has a m
 
 In this project I implemented a 2 dimensional particle filter in C++. My particle filter will be given a map and some initial localization information (analogous to what a GPS would provide). At each time step my filter will also get observation and control data.
 
+## Algorithm
+
+The following diagram shows the pseudocode of the particle filter:
+
+[image1]: ./images/02-l-pseudocode.00-00-47-13.still006.PNG "PseudoCode"
+![alt text][image1]
+
+
 
 
 
