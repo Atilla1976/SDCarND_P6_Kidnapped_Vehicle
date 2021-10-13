@@ -56,38 +56,40 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 void ParticleFilter::prediction(double delta_t, double std_pos[], 
                                 double velocity, double yaw_rate) {
   /**
-   * Predicts the state using motion model assuming a bicycle motion model.
-   * For each particle the location is updated based on velocity and yaw rate.
+   * TODO: Add measurements to each particle and add random Gaussian noise.
+   * NOTE: When adding noise you may find std::normal_distribution 
+   *   and std::default_random_engine useful.
+   *  http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
+   *  http://www.cplusplus.com/reference/random/default_random_engine/
    */
   
-  std::default_random_engine gen;
-
-  for (int i = 0; i < num_particles; i++)
-  {
-      Particle particle = particles[i];
-
-      // If-Else block because there are two different methods of calculating position after motion depending on yaw rate. If it equals 0, then you can use known equations for constant velocity motion. 
-      // Instead of a hard check of 0, adding a check for very low value of yaw_rate
-      if (fabs(yaw_rate) < 0.0001) {
-          particle.x = particle.x + velocity * delta_t * cos(particle.theta);
-          particle.y = particle.y + velocity * delta_t * sin(particle.theta);
-          particle.theta = particle.theta;
-      }
-      else {
-          particle.x = particle.x + (velocity / yaw_rate) * (sin(particle.theta + (yaw_rate * delta_t)) - sin(particle.theta));
-          particle.y = particle.y + (velocity / yaw_rate) * (cos(particle.theta) - cos(particle.theta + (yaw_rate * delta_t)));
-          particle.theta = particle.theta + (yaw_rate * delta_t);
-      }
-
-      // Adding random Gaussian noise
-      std::normal_distribution<double> noisy_x(particle.x, std_pos[0]);
-      std::normal_distribution<double> noisy_y(particle.y, std_pos[1]);
-      std::normal_distribution<double> noisy_theta(particle.theta, std_pos[2]);
-
-      particles[i].x = noisy_x(gen);
-      particles[i].y = noisy_y(gen);
-      particles[i].theta = noisy_theta(gen);
+  for (int i = 0; i<num_particles; i++) {
+    Particle particle = particles[i];
+    
+    // Checking if yaw rate is equal to zero
+    
+    if (fabs(yaw_rate) < 0.0001) {
+      particle.x = particle.x + velocity * delta_t * cos(particle.theta);
+      particle.y = particle.y + velocity * delta_t * sin(particle.theta);
+      particle.theta = particle.theta;
     }
+    else {
+      particle.x = particle.x + (velocity /yaw_rate) * (sin(particle.theta + (yaw_rate * delta_t)) - sin(particle.theta));
+      particle.y = particle.y + (velocity /yaw_rate) * (cos(particle.theta) - cos(particle.theta + (yaw_rate * delta_t)));
+      particle.theta = particle.theta + (yaw_rate * delta_t);
+    }
+  
+    // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta) 
+    std::default_random_engine gen;
+  
+    normal_distribution<double> dist_x(particle.x, std_pos[0]);
+    normal_distribution<double> dist_y(particle.y, std_pos[1]);
+    normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
+    
+    particles[i].x = dist_x(gen);
+    particles[i].y = dist_y(gen);
+    particles[i].theta = dist_theta(gen);
+  }
 }
 
 void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted, 
