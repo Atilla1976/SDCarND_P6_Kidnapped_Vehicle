@@ -60,8 +60,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    * For each particle the location is updated based on velocity and yaw rate.
    */
   
-  std::default_random_engine gen;
-
+  
   for (int i = 0; i < num_particles; i++)
   {
       Particle particle = particles[i];
@@ -78,6 +77,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
           particle.y = particle.y + (velocity / yaw_rate) * (cos(particle.theta) - cos(particle.theta + (yaw_rate * delta_t)));
           particle.theta = particle.theta + (yaw_rate * delta_t);
       }
+      std::default_random_engine gen;
 
       // Adding random Gaussian noise
       std::normal_distribution<double> noisy_x(particle.x, std_pos[0]);
