@@ -82,9 +82,9 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
     // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta) 
     std::default_random_engine gen;
   
-    normal_distribution<double> dist_x(particle.x, std_pos[0]);
-    normal_distribution<double> dist_y(particle.y, std_pos[1]);
-    normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
+    std::normal_distribution<double> dist_x(particle.x, std_pos[0]);
+    std::normal_distribution<double> dist_y(particle.y, std_pos[1]);
+    std::normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
     
     particles[i].x = dist_x(gen);
     particles[i].y = dist_y(gen);
