@@ -27,29 +27,33 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
    * http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
    * http://www.cplusplus.com/reference/random/default_random_engine/
    */
-// number of particles
-  num_particles = 50; 
-  
-  // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta)
-  normal_distribution<double> dist_x(x, std[0]);
-  normal_distribution<double> dist_y(y, std[1]);
-  normal_distribution<double> dist_theta(theta, std[2]);
-  
   std::default_random_engine gen;
   
-  // Generate "num_particles" of particles
+  num_particles = 50;
+  
+  // Set GPS provided state
+  double gps_x = x;
+  double gps_y = y;
+  double gps_theta = theta;
+  
+  // Add random Gaussian noise to each particle
+  normal_distribution<double> noisy_x(gps_x, std[0]);
+  normal_distribution<double> noisy_y(gps_y, std[1]);
+  normal_distribution<double> noisy_theta(gps_theta, std[2]);
+  
+  // Generate particles
   for (int i=0; i<num_particles; i++){
     Particle particle;
     particle.id = i;
-    particle.x = dist_x(gen);
-    particle.y = dist_y(gen);
-    particle.theta = dist_theta(gen);
+    particle.x = noisy_x(gen); // "gen" is the random engine initialized earlier
+    particle.y = noisy_y(gen);
+    particle.theta = noisy_theta(gen);
     particle.weight = 1.0;
-    particles[i] = particle;
-    // particles.push_back(particle);
-    // weights.push_back(particle.weight);
+    
+    particles.push_back(particle);
+    weights.push_back(particle.weight);
   }
-  is_initialized = true;    
+  is_initialized = true;
 }
 
 void ParticleFilter::prediction(double delta_t, double std_pos[], 
