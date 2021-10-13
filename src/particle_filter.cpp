@@ -81,7 +81,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
       // Adding random Gaussian noise
       std::normal_distribution<double> dist_x(particle.x, std_pos[0]);
       std::normal_distribution<double> dist_y(particle.y, std_pos[1]);
-      std::normal_distribution<double> ndist_theta(particle.theta, std_pos[2]);
+      std::normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
 
       particles[i].x = dist_x(gen);
       particles[i].y = dist_y(gen);
