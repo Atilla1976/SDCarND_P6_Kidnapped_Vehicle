@@ -29,7 +29,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
    */
   std::default_random_engine gen;
   
-  num_particles = 40;
+  num_particles = 20;
   
   // Set GPS provided state
   double gps_x = x;
