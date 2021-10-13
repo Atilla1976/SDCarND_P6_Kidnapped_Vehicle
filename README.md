@@ -22,17 +22,43 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 ### Initialization Step:
 + Setting the number of particles (num_particles) to 20
-+ All particles are initialized to the first position based on estimates of x [m], y [m], theta [rad] and their uncertainties from GPS (provided by the Term 2 Simulator) 
++ All particles are initialized to the first position based on estimates of x [m], y [m], theta [rad] and their uncertainties from GPS (provided by the Term 2 Simulator)
++ Random Gaussian noise to each particle
 + Setting the initial weight (particle.weight) of all particles to 1.0
 
 
 
 ### Prediction Step:
-
++ Adding meassurements and random Gaussian noise to each particle
++ 
 
 
 
 ### Update Step:
+**homogeneous transformation**
+$$ 
+\begin{bmatrix}
+      x_m \\\\
+      y_m \\\\
+      1
+\end{bmatrix}
+=
+\begin{bmatrix}
+      cos\theta&-sin\theta&x_p \\\\
+      sin\theta&cos\theta&y_p\\\\
+      0&0&1
+    \end{bmatrix}
+\times
+\begin{bmatrix}
+      x_c \\\\
+      y_c \\\\
+      1
+    \end{bmatrix}
+$$
+with<br>
+$x_m = x_p + (cos\theta\times x_c)-(sin\theta \times y_c)$<br>
+$y_m = y_p + (sin\theta\times x_c)-(cos\theta \times y_c)$
+
 
 
 
