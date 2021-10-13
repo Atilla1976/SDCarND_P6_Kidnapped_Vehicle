@@ -32,7 +32,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   num_particles = 20; 
   
   // list of particles
-  vector<Particle>particles
+  vector<Particle> particles;
   
   // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta)
   normal_distribution<double> dist_x(x, std[0]);
