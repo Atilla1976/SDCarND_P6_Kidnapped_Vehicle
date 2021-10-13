@@ -35,7 +35,9 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 
 ### Update Step:
+
 **homogeneous transformation**
+<br>
 $$ 
 \begin{bmatrix}
       x_m \\\\
