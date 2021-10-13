@@ -60,10 +60,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    * For each particle the location is updated based on velocity and yaw rate.
    */
   
-  std::default_random_engine gen;
-
-  for (int i = 0; i < num_particles; i++)
-  {
+  for (int i = 0; i < num_particles; i++) {
       Particle particle = particles[i];
 
       // If-Else block because there are two different methods of calculating position after motion depending on yaw rate. If it equals 0, then you can use known equations for constant velocity motion. 
@@ -87,7 +84,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
       particles[i].x = noisy_x(gen);
       particles[i].y = noisy_y(gen);
       particles[i].theta = noisy_theta(gen);
-    }
+  }
 }
 
 void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted, 
