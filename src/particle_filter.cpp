@@ -22,10 +22,12 @@ using std::normal_distribution;
 
 void ParticleFilter::init(double x, double y, double theta, double std[]) {
   /**
-   * Initialize all particles to first position (GPS-based estimations of x, y, theta with uncertainties) and all weights to 1. 
-   * Random Gaussian noise to each particle.
-   * http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
-   * http://www.cplusplus.com/reference/random/default_random_engine/
+   * TODO: Set the number of particles. Initialize all particles to 
+   *   first position (based on estimates of x, y, theta and their uncertainties
+   *   from GPS) and all weights to 1. 
+   * TODO: Add random Gaussian noise to each particle.
+   * NOTE: Consult particle_filter.h for more information about this method 
+   *   (and others in this file).
    */
   
   // number of particles
@@ -66,11 +68,11 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    *  http://www.cplusplus.com/reference/random/default_random_engine/
    */
   std::default_random_engine gen;
+  
   for (int i = 0; i<num_particles; i++) {
     Particle particle = particles[i];
     
     // Checking if yaw rate is equal to zero
-    
     if (fabs(yaw_rate) < 0.0001) {
       particle.x = particle.x + velocity * delta_t * cos(particle.theta);
       particle.y = particle.y + velocity * delta_t * sin(particle.theta);
@@ -83,8 +85,6 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
     }
   
     // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta) 
-
-  
     normal_distribution<double> dist_x(particle.x, std_pos[0]);
     normal_distribution<double> dist_y(particle.y, std_pos[1]);
     normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
@@ -96,11 +96,14 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
 }
 
 
-void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted, 
-                                     vector<LandmarkObs>& observations) {
+void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted, vector<LandmarkObs>& observations) {
   /**
-   * Associate observations to landmarks.
-   * NOTE: This method is useful as a helper during the updateWeights phase.
+   * TODO: Find the predicted measurement that is closest to each 
+   *   observed measurement and assign the observed measurement to this 
+   *   particular landmark.
+   * NOTE: this method will NOT be called by the grading code. But you will 
+   *   probably find it useful to implement this method and use it as a helper 
+   *   during the updateWeights phase.
    */
   
   for(unsigned int i=0; i<observations.size(); i++){
@@ -134,15 +137,19 @@ double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs,
   return weight;
 }
 
-void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], 
-                                   const vector<LandmarkObs> &observations, 
-                                   const Map &map_landmarks)
-{
+void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], const vector<LandmarkObs> &observations, const Map &map_landmarks) {
   /**
-   * Updates the weights of each particle using a mult-variate Gaussian distribution.
-   * Observations are given in the VEHICLE'S coordinate system. 
-   * Particles are located according to the MAP'S coordinate system. 
-   * We need to transform between the two systems. A homogenous transformation performs rotation and translation.
+   * TODO: Update the weights of each particle using a mult-variate Gaussian 
+   *   distribution. You can read more about this distribution here: 
+   *   https://en.wikipedia.org/wiki/Multivariate_normal_distribution
+   * NOTE: The observations are given in the VEHICLE'S coordinate system. 
+   *   Your particles are located according to the MAP'S coordinate system. 
+   *   You will need to transform between the two systems. Keep in mind that
+   *   this transformation requires both rotation AND translation (but no scaling).
+   *   The following is a good resource for the theory:
+   *   https://www.willamette.edu/~gorr/classes/GeneralGraphics/Transforms/transforms2d.htm
+   *   and the following is a good resource for the actual equation to implement
+   *   (look at equation 3.33) http://planning.cs.uiuc.edu/node99.html
    */
   
    for (unsigned int i = 0; i < particles.size(); ++i) {
@@ -151,13 +158,15 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
   
     for (unsigned int j = 0; j < observations.size(); j++) {
+
       // Homogenous Transformation (from vehicle's coord. system to map's coordinate system)
-
-      double x_m = particle.x + (cos(particle.theta) * observations[j].x) - (sin(particle.theta) * observations[j].y);
       // transformed to map x coordinate
+      double x_m = particle.x + (cos(particle.theta) * observations[j].x) - (sin(particle.theta) * observations[j].y);
 
-      double y_m = particle.y + (sin(particle.theta) * observations[j].x) + (cos(particle.theta) * observations[j].y);
       // transformed to map y coordinate
+      double y_m = particle.y + (sin(particle.theta) * observations[j].x) + (cos(particle.theta) * observations[j].y);
+  
+      
 
       std::vector<Map::single_landmark_s> landmark_list = map_landmarks.landmark_list;
       double land_x; // x value of landmark
