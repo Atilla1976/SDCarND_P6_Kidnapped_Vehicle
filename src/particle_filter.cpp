@@ -31,6 +31,9 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   // number of particles
   num_particles = 20; 
   
+  // list of particles
+  vector<Particle>particles
+  
   // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta)
   normal_distribution<double> dist_x(x, std[0]);
   normal_distribution<double> dist_y(y, std[1]);
@@ -46,9 +49,9 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
     particle.y = dist_y(gen);
     particle.theta = dist_theta(gen);
     particle.weight = 1.0;
-    // particles[i] = particle;
-    particles.push_back(particle);
-    weights.push_back(particle.weight);
+    particles[i] = particle;
+    // particles.push_back(particle);
+    // weights.push_back(particle.weight);
   }
   is_initialized = true;    
 }
