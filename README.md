@@ -1,5 +1,4 @@
-[image1]: ./images/Animation.gif "Animation"
-![Alt Text](image1)
+![](images/Animation.gif)
 
 
 
