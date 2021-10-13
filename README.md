@@ -21,7 +21,9 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 
 ### Initialization Step:
-
++ Setting the number of particles (num_particles) to 20
++ All particles are initialized to the first position based on estimates of x [m], y [m], theta [rad] and their uncertainties from GPS (provided by the Term 2 Simulator) 
++ Setting the initial weight (particle.weight) of all particles to 1.0
 
 
 
