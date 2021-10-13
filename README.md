@@ -17,7 +17,7 @@ The following diagram shows the pseudocode of the particle filter with the main 
 
 ![alt text][image1]
 
-Initialization, Prediction, Update step and Resample step
+*Initialization, Prediction, Update step and Resample step*
 
 
 
