@@ -145,40 +145,43 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
    * We need to transform between the two systems. A homogenous transformation performs rotation and translation.
    */
   
-  for (unsigned int i = 0; i < particles.size(); ++i)
-    {
+   for (unsigned int i = 0; i < particles.size(); ++i) {
     Particle particle = particles[i];
     double prob = 1.0;
 
-        for (unsigned int j = 0; j < observations.size(); j++)
-        {
-            // Homogenous Transformation (transforms observations from vehicle's coord. system to map's coordinate system)
-            double x_m = particle.x + (cos(particle.theta) * observations[j].x) - (sin(particle.theta) * observations[j].y); // x_m >> transformed observation (TOBS) in x >> this means it is map coordinates
-            double y_m = particle.y + (sin(particle.theta) * observations[j].x) + (cos(particle.theta) * observations[j].y); // y_m >> transformed observation (TOBS) in y >> this means it is map coordinates
+  
+    for (unsigned int j = 0; j < observations.size(); j++) {
+      // Homogenous Transformation (from vehicle's coord. system to map's coordinate system)
 
-            std::vector<Map::single_landmark_s> landmark_list = map_landmarks.landmark_list;
-            double land_x; // x value of landmark
-            double land_y; // y value of landmark
-            double max_val = 2 * sensor_range;
-            for (unsigned int k = 0; k < landmark_list.size(); k++)
-            {
-                // Calculate distance between particle and landmarks
-                double local_land_x = landmark_list[k].x_f;
-                double local_land_y = landmark_list[k].y_f;
-                double distance = dist(x_m, y_m, local_land_x, local_land_y);
-                if ((distance <= sensor_range) && (distance <= max_val))
-                {
-                  // Calculate multivariate Gaussian normal distribution
-                  land_x = local_land_x;
-                  land_y = local_land_y;
-                  max_val = distance;
-                  prob = multiv_prob(std_landmark[0], std_landmark[1], x_m, y_m, land_x, land_y);
-                  particles[i].weight = prob;
-                  weights[i] = prob;
-                }
-            }
+      double x_m = particle.x + (cos(particle.theta) * observations[j].x) - (sin(particle.theta) * observations[j].y);
+      // transformed to map x coordinate
+
+      double y_m = particle.y + (sin(particle.theta) * observations[j].x) + (cos(particle.theta) * observations[j].y);
+      // transformed to map y coordinate
+
+      std::vector<Map::single_landmark_s> landmark_list = map_landmarks.landmark_list;
+      double land_x; // x value of landmark
+      double land_y; // y value of landmark
+      double max_val = 2 * sensor_range;
+
+      for (unsigned int k = 0; k < landmark_list.size(); k++) {
+        // Calculate distance between particle and landmarks
+        double local_land_x = landmark_list[k].x_f;
+        double local_land_y = landmark_list[k].y_f;
+        double distance = dist(x_m, y_m, local_land_x, local_land_y);
+
+        if ((distance <= sensor_range) && (distance <= max_val))  {
+          // Calculate multivariate Gaussian normal distribution
+          land_x = local_land_x;
+          land_y = local_land_y;
+          max_val = distance;
+          prob = multiv_prob(std_landmark[0], std_landmark[1], x_m, y_m, land_x, land_y);
+          particles[i].weight = prob;
+          weights[i] = prob;
         }
+      }
     }
+  }
 }
 
 
