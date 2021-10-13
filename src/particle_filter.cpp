@@ -60,7 +60,10 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    * For each particle the location is updated based on velocity and yaw rate.
    */
   
-  for (int i = 0; i < num_particles; i++) {
+  std::default_random_engine gen;
+
+  for (int i = 0; i < num_particles; i++)
+  {
       Particle particle = particles[i];
 
       // If-Else block because there are two different methods of calculating position after motion depending on yaw rate. If it equals 0, then you can use known equations for constant velocity motion. 
@@ -75,18 +78,16 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
           particle.y = particle.y + (velocity / yaw_rate) * (cos(particle.theta) - cos(particle.theta + (yaw_rate * delta_t)));
           particle.theta = particle.theta + (yaw_rate * delta_t);
       }
-      // Createing normal distributions for x, y and theta (std: array of dim 3 standart deviation of x, y and theta) 
-      std::default_random_engine gen;
 
       // Adding random Gaussian noise
-      std::normal_distribution<double> dist_x(particle.x, std_pos[0]);
-      std::normal_distribution<double> dist_y(particle.y, std_pos[1]);
-      std::normal_distribution<double> dist_theta(particle.theta, std_pos[2]);
+      std::normal_distribution<double> noisy_x(particle.x, std_pos[0]);
+      std::normal_distribution<double> noisy_y(particle.y, std_pos[1]);
+      std::normal_distribution<double> noisy_theta(particle.theta, std_pos[2]);
 
-      particles[i].x = dist_x(gen);
-      particles[i].y = dist_y(gen);
-      particles[i].theta = dist_theta(gen);
-  }
+      particles[i].x = noisy_x(gen);
+      particles[i].y = noisy_y(gen);
+      particles[i].theta = noisy_theta(gen);
+    }
 }
 
 void ParticleFilter::dataAssociation(vector<LandmarkObs> predicted, 
