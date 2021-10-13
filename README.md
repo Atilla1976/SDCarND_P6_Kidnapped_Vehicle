@@ -11,21 +11,31 @@ In this project I implemented a 2 dimensional particle filter in C++. My particl
 
 ## Algorithm
 
-The following diagram shows the pseudocode of the particle filter with the main steps:
+The following diagram shows the pseudocode of the particle filter with the four main steps:
 
 [image1]: ./images/02-l-pseudocode.00-00-47-13.still006.png "PseudoCode"
 
 ![alt text][image1]
 
-*Initialization, Prediction, Update step and Resample step*
+*Initialization step, prediction step, update step and resample step*
+
+
+### Initialization Step:
 
 
 
 
+### Prediction Step:
 
 
 
 
+### Update Step:
+
+
+
+
+### Resample Step:
 
 
 
