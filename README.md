@@ -30,36 +30,15 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 ### Prediction Step:
 + Adding meassurements and random Gaussian noise to each particle
-+ 
++ The calculation of the location of each particle after the time step delta t depends on the yaw rate - if it is close or equal to 0 or not
 
 
 
 ### Update Step:
 
-**homogeneous transformation**
-<br>
-$$ 
-\begin{bmatrix}
-      x_m \\\\
-      y_m \\\\
-      1
-\end{bmatrix}
-=
-\begin{bmatrix}
-      cos\theta&-sin\theta&x_p \\\\
-      sin\theta&cos\theta&y_p\\\\
-      0&0&1
-    \end{bmatrix}
-\times
-\begin{bmatrix}
-      x_c \\\\
-      y_c \\\\
-      1
-    \end{bmatrix}
-$$
-with<br>
-$x_m = x_p + (cos\theta\times x_c)-(sin\theta \times y_c)$<br>
-$y_m = y_p + (sin\theta\times x_c)-(cos\theta \times y_c)$
+
+
+
 
 
 
