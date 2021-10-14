@@ -33,9 +33,9 @@ The following diagram shows the pseudocode of the particle filter with the four 
 + Adding meassurements and random Gaussian noise to each particle
 + The calculation of the location of each particle after the time step delta t depends on the yaw rate - if it is close or equal to 0 or not:
 
-[image2]: ./images/prediction.png "prediction"
+  [image2]: ./images/prediction.png "prediction"
 
-![alt text][image2]
+  ![alt text][image2]
 
 
 ### Update Step:
@@ -47,26 +47,28 @@ In this step, particles are assigned with weights corresponding to their predict
 + In order to map the observation into the global coordinate system, transformation and rotation are requiert, but no scaling. This is done by Homogenous Transformation:
 
 
-[image3]: ./images/homogenous_transformation.PNG "homogenous transformation"
+  [image3]: ./images/homogenous_transformation.PNG "homogenous transformation"
 
-![alt text][image3]
+  ![alt text][image3]
 + nearest neighbour technique:
   + Finding the landmark with the lowest euclidean distance to an observation
-  + Once all observations are associated to a landmark, weights of particles are calculated by Multivariante-Gaussian standard deviation:
++ Once all observations are associated to a landmark, weights of particles are calculated by Multivariante-Gaussian standard deviation:
 
-[image4]: ./images/multiv_gaussian.PNG "Multivariate-Gaussian's standard deviation"
+    [image4]: ./images/multiv_gaussian.PNG "Multivariate-Gaussian's standard deviation"
 
-![alt text][image4]
-
-
-
+    ![alt text><][image4]
+      
++ The higher the weight, the more accurate is the particle's prediction
 
 
 ### Resample Step:
 
++ Resampling take particles more into account with higher weights and neglects particles with lower weight. Once resampling is done, the particle with highest weight is chosen. This particle gives most accurate prediction of vehicle's location.
+
++ The location provided by particle with highest weight is then compared with the ground truth and error in the system is calculated.
 
 
-# Project Output
+## Project Output
 Below is the result with 20 particles:
 
 [image5]: ./images/Success.PNG "success"
