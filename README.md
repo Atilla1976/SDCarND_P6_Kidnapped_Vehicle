@@ -40,15 +40,23 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 ### Update Step:
 
-+ Homogenous Transformation - from vehicle's coordination system to map's coordinate system:
+In this step, particles are assigned with weights corresponding to their prediction:
+
++ The vehicle uses LIDAR to sense the distances to landmarks in the enviroment (given from the simulatior in a list with x, y coordinates). The measurements include noise as standard deviation.
+
++ In order to map the observation into the global coordinate system, transformation and rotation are requiert, but no scaling. This is done by Homogenous Transformation:
 
 
 [image3]: ./images/homogenous_transformation.PNG "homogenous transformation"
 
 ![alt text][image3]
 + nearest neighbour technique:
-  + Finding the landmark with the lowest distance to a 
+  + Finding the landmark with the lowest euclidean distance to an observation
+  + Once all observations are associated to a landmark, weights of particles are calculated by Multivariante-Gaussian standard deviation:
 
+[image4]: ./images/multiv_gaussian.PNG "Multivariate-Gaussian's standard deviation"
+
+![alt text][image4]
 
 
 
@@ -61,9 +69,9 @@ The following diagram shows the pseudocode of the particle filter with the four 
 # Project Output
 Below is the result with 20 particles:
 
-[image4]: ./images/Success.PNG "success"
+[image5]: ./images/Success.PNG "success"
 
-![alt text][image4]
+![alt text][image5]
 
 
 
