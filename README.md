@@ -22,6 +22,7 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 ### Initialization Step:
 + Setting the number of particles (num_particles) to 20
+  + increasing the number of particles will increase the computation time significantly 
 + All particles are initialized to the first position based on estimates of x [m], y [m], theta [rad] and their uncertainties from GPS (provided by the Term 2 Simulator)
 + Random Gaussian noise to each particle
 + Setting the initial weight (particle.weight) of all particles to 1.0
@@ -36,8 +37,11 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 ### Update Step:
 
++ Homogenous Transformation - from vehicle's coordination system to map's coordinate system
+<br>
+[image2]: ./images/homogenous_transformation.PNG "homogenous transformation"
 
-
+![alt text][image2]
 
 
 
