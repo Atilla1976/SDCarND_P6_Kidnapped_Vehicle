@@ -31,17 +31,23 @@ The following diagram shows the pseudocode of the particle filter with the four 
 
 ### Prediction Step:
 + Adding meassurements and random Gaussian noise to each particle
-+ The calculation of the location of each particle after the time step delta t depends on the yaw rate - if it is close or equal to 0 or not
++ The calculation of the location of each particle after the time step delta t depends on the yaw rate - if it is close or equal to 0 or not:
 
+[image2]: ./images/prediction.png "prediction"
+
+![alt text][image2]
 
 
 ### Update Step:
 
-+ Homogenous Transformation - from vehicle's coordination system to map's coordinate system
-<br>
-[image2]: ./images/homogenous_transformation.PNG "homogenous transformation"
++ Homogenous Transformation - from vehicle's coordination system to map's coordinate system:
 
-![alt text][image2]
+
+[image3]: ./images/homogenous_transformation.PNG "homogenous transformation"
+
+![alt text][image3]
++ nearest neighbour technique:
+  + Finding the landmark with the lowest distance to a 
 
 
 
@@ -51,6 +57,13 @@ The following diagram shows the pseudocode of the particle filter with the four 
 ### Resample Step:
 
 
+
+# Project Output
+Below is the result with 20 particles:
+
+[image4]: ./images/Success.PNG "success"
+
+![alt text][image4]
 
 
 
